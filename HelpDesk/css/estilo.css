@@ -1,0 +1,17 @@
+.saudacao{
+	display:block;
+	float: right;
+	font-size:12px;
+}
+.ladoEsquerdo{
+	position: relative;
+	top: 0px;
+}
+.perguntas{
+	margin-left: 200px;
+}
+.bntVoltar{
+	position:absolute;
+	top:8px;
+	left:10px;
+}

@@ -1,0 +1,201 @@
+<?php
+//~ Template para add-edit.php
+// variables:
+//  $errors - validação de erros
+//  $todo - submitted TODO
+//  $edit - true para EDITAR, false para GRAVAR
+function error_field($title, array $errors) {
+    foreach ($errors as $error) {
+        /* @var $error Error */
+        if ($error->getSource() == $title) {
+            return ' error-field';
+        }
+    }
+    return '';
+}
+$conclusao=$todo->getCreatedOn()->format('d/m/y')==$todo->getEficazData()->format('d/m/y');
+/* @var $todo Todo */
+
+echo '<h1>';
+    if ($edit): 
+        echo Utils::escape($todo->getTipoacao());
+    else:
+        echo "Novo Registro de Não Conformidade";
+    endif; 
+echo '</h1>';
+
+if (!empty($errors)): 
+    echo '<ul class="errors">';
+        foreach ($errors as $error): 
+         /* @var $error Error */ 
+            echo '<li>'.$error->getMessage().'</li>';
+        endforeach;
+    echo '</ul>';
+endif; 
+?>
+<form action="#" method="post">
+    <fieldset>
+	<div class="cadastro">
+            <table border=1 cellspacing=3  bordercolor="#ccc">
+                <th class='identificacao' colspan="4" bgcolor="#ccc">ABERTURA</th>
+                <tr><td>
+                    <label>Número:</label>
+		</td><td>
+            <?php
+                echo '<input type="hidden" name="todo[numero]" value="'.$numero.'" class="text '.error_field('numero', $errors).'" id="numero" />&nbsp&nbsp'.$numero; 
+                echo '</td><td>';
+                echo '<label class="col3">Prazo de Retorno:</label>';
+                echo '</td><td>';
+                echo '<input type="text" name="todo[due_on_date]" value="'.Utils::escape($todo->getDueOn()->format('d/m/Y')).'" class="text datepicker'.error_field('due_on', $errors).'" />';
+                echo '<input type=\'hidden\' name=\'todo[due_on_hour]\' value=15 />';
+                echo '<input type=\'hidden\' name=\'todo[due_on_minute]\' value=15 />';
+                echo '</td></tr>';
+                echo '<input type="hidden" name="todo[title]" value="'.Utils::escape($todo->getTitle()).'" class="text'.error_field('title', $errors).'" id="titulo"/>';
+                echo '<tr><td colspan="2">
+                    <label class="col1">Origem:&nbsp</label>';
+                        $origem=Utils::escape($todo->getOrigem());
+                echo '<select name="todo[origem]" class="text'.error_field('origem', $errors).'" >';
+                    echo '<option value="'.$origem.'" selected>'.$origem.'</option>';
+                    echo '<option value="Serviço/Produto não conforme">Serviço/Produto Não Conforme</option>';
+                    echo '<option value="Reclamação do cliente">Reclamação do Cliente</option>';
+                    echo '<option value="Auditoria">Auditoria</option>';
+                    echo '<option value="Outros">Outros</option>';
+                echo '</select>';
+                echo '</td><td>';
+                echo '<label>Tipo de Ação:&nbsp</label>';
+                    $tipoacao=Utils::escape($todo->getTipoacao());
+                echo '<select name="todo[tipoacao]" class="text'.error_field('tipoacao', $errors).'">';
+                    echo '<option value="'.$tipoacao.'" selected>'. $tipoacao.'</option>';
+                    echo '<option value="Corretiva">Corretiva</option>';
+                    echo '<option value="Preventiva">Preventiva</option>';
+                    echo '<option value="Melhoria">Melhoria</option>';
+                echo '</select>';
+                echo '</td><td>';
+                    echo '<label>Nível:&nbsp&nbsp</label>';
+                echo '<select name="todo[priority]" class=\'select-style\'>';
+                foreach (Todo::allPriorities() as $priority):
+                    echo '<option value="'.$priority.'"';
+                        if ($priority == $todo->getPriority()):
+                            echo 'selected="selected"';
+                        endif;
+                            echo '>'.$priority.'</option>';
+                endforeach;
+                echo '</select>';
+                echo '</td></tr>';
+                echo '<tr><td colspan=2>';
+                    echo '<font color="#4c7cbd"><b>Processo ou Setor Envolvido:</b></font>';
+		echo '</td><td colspan=2>';
+                echo '<input type="text" name="todo[processo]" value="'.Utils::escape($todo->getProcesso()).'" size="45px" />';
+                echo '</td></tr>';
+                echo '<tr><td colspan=2>';
+                    echo '<font color="#4c7cbd"><b>Responável pela Identificação:</b></font>';
+		echo '</td><td colspan=2>';
+                    echo '<input type="text" name="todo[identificador]" value="'.Utils::escape($todo->getIdentificador()).'" size="45" />';
+                echo '</td></tr>';
+                    echo '<input type=\'hidden\' name=\'todo[description]\' value=\''.Utils::escape($todo->getDescription()).'\'/>';
+                echo '<tr><td colspan="4">';
+                    echo '<label>Detalhamento do Registro de Não Conformidade e Evidências Encontradas:</label>';
+                echo '</td></tr>';
+                echo '<tr><td colspan=4>';
+                    echo '<textarea name="todo[descricao]" cols="1" rows="1" class="'.error_field('descricao', $errors).'">'.Utils::escape($todo->getDescricao()).'</textarea>';	
+                echo '</td></tr>';
+                echo '<tr><th class=\'identificacao\' colspan="4" bgcolor="#ccc">IDENTIFICAÇÃO</th></tr>';
+                echo '<tr><td colspan="4">';
+                    echo '<font color="#4c7cbd"><b>Causa da Não Conformidade:(Aplicação dos 5 porquês)</b></font>';
+                echo '</td></tr>';
+		echo '<tr><td colspan=4>';
+                    echo '<textarea name="todo[causa]" >'.Utils::escape($todo->getCausa()).'</textarea>';
+                echo '</td></tr>';
+                    echo '<input type=\'hidden\' name=\'todo[comment]\' value=\''.Utils::escape($todo->getComment()).'\'/>';
+                echo '<tr><td colspan=4>';
+                    echo '<label>Ação Imediata:(Correção)</label>';
+		echo '</td></tr>';
+		echo '<tr><td colspan=4>';
+                    echo '<textarea name="todo[imediata]" class="'. error_field('imediata', $errors).'" >'.Utils::escape($todo->getImediata()).'</textarea>';
+                echo '</td></tr>';
+                echo '<tr><td colspan="4">';
+                    echo '<label>Ação Corretiva ou Preventiva:</label>';
+                echo '</td></tr>';
+                echo '<tr><td colspan=4>';
+                    echo '<textarea name="todo[corretiva]" class="'.error_field('corretiva', $errors).'" >'.Utils::escape($todo->getCorretiva()).'</textarea>';
+                echo '</td></tr>';
+                echo '<tr><td colspan=4>';
+                    echo '<label>Nome do Responsável pela Implementação:</label>';
+                echo '</td></tr>';
+		echo '<tr><td colspan=4>';
+                    echo '<input type=\'text\' name="todo[implementador]" class="<?php echo error_field(\'implementador\', $errors); ?>" value=\''.Utils::escape($todo->getImplementador()).'\' id=\'campo\' />';
+                echo '</td></tr>';
+                echo '<tr><td>';
+                    echo '<label class="col3">Eliminação:(Prazo)</label>';
+                echo '</td><td>';
+                    echo '<input type="text" name="todo[eliminacao]" value="';
+			if($todo->getEliminacao()->format('d/m/y')==$todo->getCreatedOn()->format('d/m/y')){
+                            echo '';
+			}else{
+                            echo Utils::escape($todo->getEliminacao()->format('d/m/Y'));
+			}
+                    echo '" class="text datepicker'.error_field('eliminacao', $errors).'" />';
+                    echo '<input type=\'hidden\' name=\'todo[eliminacao_min]\' value=15 />';
+                echo '</td><td>';
+                    echo '<label class="col3">Novo Prazo:</label>';
+                echo '</td><td>';
+                    echo '<input type="text" name="todo[eliminacao_novo]" value="'; 
+                        if($todo->getEliminacao_novo()->format('d/m/y')==$todo->getCreatedOn()->format('d/m/y')){
+                            echo '';
+			}else{
+                            echo Utils::escape($todo->getEliminacao_novo()->format('d/m/Y'));
+			}
+                    echo '" class="text datepicker'.error_field('eliminacao_novo', $errors).'" />'; 
+                    echo '<input type=\'hidden\' name=\'todo[eliminacao_novo_min]\' value=15 />'; 
+                echo '</td></tr>';    
+                echo '<tr><th class=\'identificacao\' colspan=4 bgcolor="#ccc">CONCLUSÃO</th></tr>';
+                echo '<tr><td colspan=4>';
+                    echo '<label>Registro da Verificação da Eficácia:</label>';
+		echo '</td></tr>';
+                echo '<tr><td colspan=4>';
+                    echo '<textarea type=\'text\' name="todo[comment]" class="'.error_field('comment', $errors).'" >'.Utils::escape($todo->getComment()).'</textarea>';
+                echo '</td></tr>';
+                echo '<tr><td colspan=2>';
+                    echo '<label>Nome do Responsável pela Verificação:</label>';
+		echo '</td><td colspan=2>';
+                    echo '<input type=\'text\' name="todo[resp_verificacao]" class="'.error_field('resp_verificacao', $errors).'" value="'.Utils::escape($todo->getRespVerificacao()).'" id="campo"/>';
+                echo '</td></tr>';
+		echo '<tr><td colspan=2>';
+                    echo '<label>A Ação foi Eficaz?&nbsp </label>';
+			if(Utils::escape($todo->getEficaz())=='SIM'):
+                            echo '<input type=\'radio\' value=\'SIM\' name=\'todo[eficaz]\' checked /> SIM';
+                            echo '<input type=\'radio\' value=\'NÃO\' name=\'todo[eficaz]\'/> NÃO';
+                        elseif(Utils::escape($todo->getEficaz())=='NÃO'):
+                            echo '<input type=\'radio\' value=\'SIM\' name=\'todo[eficaz]\' /> SIM';
+                            echo '<input type=\'radio\' value=\'NÃO\' name=\'todo[eficaz]\' checked /> NÃO';
+			else:
+                            echo '<input type=\'radio\' value=\'SIM\' name=\'todo[eficaz]\' /> SIM';
+                            echo '<input type=\'radio\' value=\'NÃO\' name=\'todo[eficaz]\'/> NÃO';
+			endif;
+		echo '</td><td>';
+                    echo '<label class="col3">Data:&nbsp&nbsp</label>';
+                        echo '<input type="text" name="todo[eficaz_data]" value="'; 
+                    if($conclusao){
+                        echo '';
+                    }else{
+                        echo Utils::escape($todo->getEficazData()->format('d/m/Y'));
+                    }
+                        echo '" class="text datepicker'.error_field('eficaz_data', $errors).'" />';
+                    echo '<input type=\'hidden\' name=\'todo[eficaz_data_min]\' value=15 />';
+                echo '</td><td>';
+                    $novo_rnc=null;
+                    echo '<label class="col1">Novo RNC: &nbsp&nbsp</label>';	
+                    echo '<input type="text" name="todo[novo_rnc]" value="'.Utils::escape($todo->getNovoRnc()).'" class="text '.error_field('novo_rnc', $errors).'" id="numero" />';
+		echo '</td></tr>';
+		echo '<td colspan=4>';
+            ?>
+		<div class='obs'>Obs: Se as ações não forem eficazes será aberto um novo Registro de Não Conformidade.</div>
+		</td></tr>
+		</table>
+	</div>	
+        <div class="wrapper">
+            <input type="submit" name="cancel" value="CANCEL" class="submit" />
+            <input type="submit" name="save" value="<?php echo $edit ? 'EDITAR' : 'GRAVAR'; ?>" class="submit" />
+        </div>
+    </fieldset>
+</form>

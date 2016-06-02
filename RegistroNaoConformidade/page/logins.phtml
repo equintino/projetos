@@ -1,0 +1,29 @@
+<?php
+
+//~ Template for logins.php
+// variables:
+//  $title - page title
+//  $users - Users to be displayed
+
+echo "<h1>$title</h1>";
+ 
+    if (empty($users)){
+        echo '<p>Nenhum login encontrado.</p>';
+    }else{ 
+        echo '<ul class="list">';
+        foreach ($users as $user){ 
+            echo '<li>';
+                if ($user->getLogin()){
+                    if($user->getLogin() == 'ADMIN'){
+            echo '<span class="label">LOGIN: </span>'.Utils_user::escape($user->getLogin());
+                    }else{
+            echo '<a href="'.Utils_user::createLink('user', array('id' => $user->getId())).'"><img src="img/action/edit.png" alt="" title="Alterar senha" class="icon" /></a>';
+            echo '<a href="'.Utils_user::createLink('deleteUser', array('id' => $user->getId())).'"><img src="img/action/delete.png" alt="" title="Exclui" class="icon" /></a>';
+            echo '<span class="label">LOGIN: </span>'.Utils_user::escape($user->getLogin());
+                    }
+                }
+            echo '</li>';
+        } 
+        echo '</ul>';
+    }
+?>

@@ -1,0 +1,76 @@
+<?php
+//~ Template para index.php
+// variaveis:
+//  $template - page to be displayed (included)
+//  $flashes - flash messages
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br" lang="pt-br">
+<head>
+    <title>PROSEG - Aplicações</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="proseg.ico" type="image/x-icon" />
+    <meta name="description" content="PROSEG - Aplicações" />
+    <meta name="keywords" content="PROSEG, PHP" />
+    <meta name="author" content="Edmilson Messias Quintino" />
+    
+    <link type="text/css" href="css/redmond/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/layout.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+
+</head>
+<body id="page">
+    <div class="tail-top-right"></div>
+    <div id="main">
+        <!-- header -->
+        <div id="header"></div>
+        <!-- content -->
+        <div id="content">
+            <div class="wrapper">
+                <div class="col-1">
+                    <div class="box">
+                        <div class="inner">
+                            <ul class="list">
+                                <?php 
+                                if(Utils::capitalize($_COOKIE['login'])=='Admin'):
+                                echo '<li class="last"><span><a href='.Utils::createLink('user').'><img src="img/action/user.ico" alt="" title="Adcionar Usuário" class="icon" />Adcionar Usuário</a></span></li>';
+                                else: 
+                                echo '<li><span><a href="'.Utils::createLink('home').'">Home</a></span></li>';
+                                echo '<li><span><a href="'.Utils::createLink('list',array('status' => Todo::STATUS_PENDING)).'" ><img src="img/status/PENDENTE.png" alt="" title="Não Conformidades Pendentes" class="icon" />RNCs Pendentes</a></span></li>';
+                                echo '<li><span><a href="'.Utils::createLink('list', array('status' => Todo::STATUS_DONE)).'"><img src="img/status/RESOLVIDA.png" alt="" title="Não Conformidades Resolvidas" class="icon" />RNCs Resolvidas</a></span></li>';
+                                echo '<li><span><a href="'.Utils::createLink('list', array('status' => Todo::STATUS_VOIDED)).'"><img src="img/status/VENCIDO.png" alt="" title="Prazos Vencidos" class="icon" />Prazos Vencidos</a></span></li>';
+                                echo '<li><span><a href="'.Utils::createLink('list', array('status' => Todo::STATUS_CANCELADO)).'"><img src="img/status/CANCELADO.png" alt="" title="Registros Cancelados" class="icon" />RNCs Cancelados </a></span></li>';
+                                echo '<li class="last"><span><a href="'.Utils::createLink('add-edit').'"><img src="img/action/add.png" alt="" title="Registrar Não Conformidade" class="icon" />Registrar Não Conformidade</a></span></li>';
+                                endif;
+                                echo '<li class="last"><span><a href="'.Utils::createLink('logoff').'"><img src="img/sair.png" alt="" title="Sair" class="icon" />Sair</a></span></li>'; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="indent">
+                        <?php if ($flashes): 
+                                echo '<ul id="flashes">';
+                                    foreach ($flashes as $flash):
+                                        echo '<li>'.$flash.'</li>';
+                                    endforeach;
+                                echo '</ul>';
+                               endif;
+                        require $template; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer -->
+        <div id="footer">
+            <div class="indent">
+                <div class="fleft"><a href="">T.I.</a>, 2016 &copy; Copyright, All rights reserved</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

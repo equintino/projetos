@@ -1,0 +1,77 @@
+<link href="css/user.css" rel="stylesheet" type="text/css" />
+<?php         
+//~ Template para user.php
+// variables:
+//  $errors - validação de erros
+//  $todo - submitted TODO
+//  $edit - true para EDITAR, false para GRAVAR
+function error_field($title, array $errors) {
+    foreach ($errors as $error) {
+        /* @var $error Error */
+        if ($error->getSource() == $title) {
+            return ' error-field';
+        }
+    }
+    return '';
+}
+
+echo '<h1>';
+    if ($edit){
+        echo 'Alterar Senha';
+        //echo Utils_user::escape($user->getNome());
+    }else{
+        echo 'Cadastro de Acessos';
+    } 
+echo '</h1>';
+    if (!empty($errors)):
+echo '<ul class="errors">';
+    foreach ($errors as $error):
+        /* @var $error Error */
+        echo '<li>'.$error->getMessage().'</li>';
+    endforeach;
+echo '</ul>';
+    endif;
+?>
+
+<form action="#" method="post">
+    <fieldset>
+	<div class="cadastro">
+		<table border=1 cellspacing=3  bordercolor="#ccc">
+        <tr><td>
+            <font color="#4c7cbd"><b>Setor:</b></font>
+            </td><td colspan="3">
+          <?php $setor=Utils::escape($user->getLogin());
+          echo '<select name="user[login]" class="select-style">
+              <option value="'.$setor.'" selected>'.$setor.'</option>';?>
+              <option value="FINANCEIRO">FINANCEIRO</option>
+              <option value="QUALIDADE">QUALIDADE</option>
+              <option value="OPERACIONAL">OPERACIONAL</option>
+              <option value="PERMANÊNCIA">PERMANÊNCIA</option>
+              <option value="RECEPÇÃO">RECEPÇÃO</option>
+              <option value="COMERCIAL">COMERCIAL</option>
+              <option value="SUPRIMENTO">SUPRIMENTO</option>
+              <option value="SUPERVISÃO">SUPERVISÃO</option>
+              <option value="MARKETING">MARKETING</option>
+              <option value="DP">DP</option>
+              <option value="RH">RH</option>
+              <option value="TI">TI</option>
+          </select>
+        </td></tr>
+        <tr><td>
+        <font color="#4c7cbd"><b>Senha:</b></font>
+          </td><td colspan="3">
+            <input type='password' name="user[senha]"  />        
+          </td></tr>
+        <tr><td>
+        <font color="#4c7cbd"><b>Confirmar:</b></font>
+          </td><td colspan="3">
+            <input type='password' name="user[senha2]" />        
+          </td></tr>
+</table>
+	</div>	
+        <div class="wrapper">
+            <input type="submit" name="listar" value="LISTAR" class="submit" />
+            <input type="submit" name="save" value="<?php echo $edit ? 'ALTERAR' : 'GRAVAR'; ?>" class="submit" />
+        </div>
+    </fieldset>
+</form>

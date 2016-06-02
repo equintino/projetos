@@ -1,0 +1,355 @@
+/** general **/
+* {
+    margin: 0;
+    padding: 0;
+}
+table{
+    #border: solid 1px #ccc;
+    color: graytext;
+    font-weight: bolder;
+    font-size: 12px;
+}
+#titulo{
+    width: 98%;
+}
+#imediata{
+    width: 99%;
+    #padding: 8px;
+}
+#campo{
+    width: 99%;
+    padding: 2px;
+}
+.obs{
+	font-size: 9px;
+	font-style: italic;
+	color: red;
+	text-align: right;
+}
+.nome_tb{
+	#width: 90px;
+}
+.col1{
+	#width: 10px;
+}
+.col3{
+	#text-align: right;
+	#width: 110px;
+}
+.cadastro{
+	box-shadow: 10px 10px 5px #888888;
+}
+body {
+    background: url(../img/header-bg-left2.jpg) repeat-x top #F5F5F5;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 100%;
+    line-height: 1em;
+    color: #414141;
+}
+.identificacao{
+    color: #4c7cbd;
+    font-size: 14px;
+    #text-align: right;
+    #padding: 1px;
+    font-family: cursive;
+}
+h1 {
+    margin-bottom: 30px;
+}
+h2 {
+    margin-bottom: 20px;
+}
+h3 {
+    font-size: 1em;
+    color: #4c7cbd;
+    margin-bottom: 12px;
+}
+h3 a {
+    color: #4c7cbd;
+    text-decoration: none;
+}
+h3 a:hover {
+    text-decoration: underline;
+}
+
+object {
+    vertical-align: top;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: 0;
+    vertical-align: top;
+    text-align: left;
+}
+
+a {
+    color: #414141;
+    outline: none;
+}
+a:hover {
+    text-decoration: none;
+}
+
+/** lists **/
+ul {
+    list-style: circle;
+}
+li {
+    margin-left: 30px;
+}
+ul.list {
+    list-style: none;
+}
+.list li {
+    width: 100%;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding: 3px 0 20px 0;
+    margin-left: 0;
+}
+.list li img {
+    float: left;
+    margin: -3px 15px 0 0;
+    #width: 18px;
+    #height: 18px;
+}
+.list p.description {
+    margin-bottom: 5px;
+}
+.list span.label {
+    font-weight: bold;
+}
+
+/** forms **/
+input, textarea {
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 1em;
+}
+input {
+    vertical-align: middle;
+    font-weight: normal;
+}
+form {
+    clear: right;
+    width: 100%;
+    overflow: hidden;
+}
+form fieldset {
+    border: none;
+    float: left;
+}
+form .field {
+    clear: both;
+}
+.comentario{
+    width: 100%;
+}
+form label {
+    float: left;
+    #width: 97px;
+    line-height: 18px;
+    padding: 1px;
+    font-weight: bold;
+    color: #4c7cbd;
+}
+input.text {
+    width: 70px;
+    padding: 1px 0 1px 3px;
+    border: 1px solid #d6d6d6;
+    color: #414141;
+    float: left;
+}
+select{
+    #width: 98%;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 1em;
+    vertical-align: middle;
+    font-weight: normal;
+    border: 1px solid #d6d6d6;
+    color: #414141;
+    padding-right: 3px;
+    border-radius: 3px;
+    background-color: #fff;
+    #background: #fff url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") no-repeat 90% 50%;
+}
+textarea {
+    width: 99%;
+    height: 45px;
+    padding: 1px 0 1px 3px;
+    border: 1px solid #d6d6d6;
+    color: #414141;
+    #margin-bottom: 15px;
+    overflow: auto;
+    float: left;
+}
+input{
+    border: 1px solid #d6d6d6;
+    color: #414141;
+}
+form input.submit {
+    float: right;
+    color: #4c7cbd;
+    margin-left: 5px;
+    width: 70px;
+    font-weight: bold;
+    box-shadow: 10px 10px 5px #888888;
+}
+form input.submit:hover {
+    background-color: #ccc;
+}
+.errors {
+    margin-bottom: 20px;
+}
+.errors li {
+    color: red;
+}
+.error-field {
+    background-color: pink;
+}
+
+/** boxes **/
+.box {
+    background: #fff;
+    width: 100%;
+    border: 1px solid #D6D6D6;
+}
+.box .inner {
+    padding: 30px 30px 40px 30px;
+}
+
+/** content **/
+#content {
+    padding: 20px 40px 0 40px;
+}
+#content .indent {
+    padding: 14px 0 0 9px;
+}
+#content p {
+    line-height: 1.17em;
+}
+
+/** footer **/
+#footer .indent {
+    padding: 37px 40px 20px 40px;
+}
+#footer img {
+    position: relative; top: -4px;
+}
+#footer a {
+    color: #4c7cbd;
+}
+
+/** other **/
+.fleft {
+    float: left;
+}
+.fright {
+    float: right;
+}
+.clear {
+    clear: both;
+}
+
+.alignright {
+    text-align: right;
+}
+.aligncenter {
+    text-align: center;
+}
+
+.wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+.container {
+    width: 100%;
+}
+
+.statuses {
+    float: left;
+}
+.actions {
+    float: left;
+    margin-left: 20px;
+}
+
+span.too-late {
+    color: red;
+    font-weight: bold;
+}
+
+.img-box1 {
+    width: 100%;
+    overflow: hidden;
+    padding-top: 3px;
+}
+.img-box1 img {
+    float: left;
+    margin: -3px 15px 0 0;
+}
+
+.p {
+    margin-bottom: 14px;
+}
+
+table.detail {
+    margin-bottom: 20px;
+}
+table.detail th {
+    text-align: right;
+}
+table.detail td {
+    padding: 2px 14px;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    margin: 0px 2px;
+}
+
+.icon2 {
+    width: 16px;
+    height: 16px;
+    margin: 0px 2px;
+}
+
+.line-hor {
+    border-bottom: 1px solid #000;
+    margin: 20px 0;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+}
+
+.title {
+    margin-bottom: 18px;
+}
+
+/** flashes **/
+ul#flashes {
+    margin: 0;
+    margin-bottom: 15px;
+    padding: 0;
+    list-style: none;
+}
+ul#flashes li {
+    margin: 0;
+    padding: 0;
+    color: green;
+    font-weight: bold;
+}
+
+/** jquery ui **/
+.ui-widget {
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 0.9em;
+}
+.ui-widget button {
+    width: 70px;
+}

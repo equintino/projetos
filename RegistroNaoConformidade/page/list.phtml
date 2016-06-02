@@ -1,0 +1,95 @@
+<?php
+//~ Template para list.php
+// variables:
+//  $title - título
+//  $status - status das não conformidades
+//  $todos - Dados para serem exibidos
+echo '<h1>
+    <img src="img/status/'.$status.'.png" alt="" title="'.Utils::capitalize($status).'" class="icon" /> '.$title;
+echo '</h1>';
+
+if (empty($todos)):
+    echo '<p>Nenhum RNC encontrado.</p>';
+else:
+    echo '<ul class="list">';
+        foreach ($todos as $todo):
+           $filtro = maiusculo($_COOKIE['login']);
+           $rest = substr($filtro,0,1);
+           $subject = maiusculo($todo->getProcesso());
+           $setor = strstr($subject, $filtro);
+           
+            if($setor || Utils::capitalize($_COOKIE['login'])==Utils::capitalize('QUALIDADE')):
+            //STATUS PENDENTE//
+            $tooLate = ($status == Todo::STATUS_PENDING) && ($todo->getDueOn()->getTimestamp() < $hoje->getTimestamp()) && $todo->getEliminacao()->format('d/m/Y') == ($todo->getCreatedOn()->format('d/m/Y'));
+            $tooLate2 = ($status == Todo::STATUS_PENDING) && ($todo->getEliminacao()->getTimestamp() < $hoje->getTimestamp() && $todo->getEliminacao()->format('d/m/Y') <> $todo->getCreatedOn()->format('d/m/Y')) && ($todo->getEliminacao_novo()->format('d/m/Y') == $todo->getCreatedOn()->format('d/m/Y'));
+            $tooLate3 = ($status == Todo::STATUS_PENDING) && ($todo->getEliminacao_novo()->getTimestamp() < $hoje->getTimestamp() && $todo->getEliminacao_novo()->format('d/m/Y') <> $todo->getCreatedOn()->format('d/m/Y')) && ($todo->getEficazData()->format('d/m/Y')) == ($todo->getCreatedOn()->format('d/m/Y'));
+            $tooLate4 = $todo->getEficazData()->format('d/m/Y') != $todo->getCreatedOn()->format('d/m/Y'); 
+            echo '<li>';
+                if($tooLate){
+                    echo "<img src='img/exclamation.png' alt='' title='Prazo esgotado!' class='icon'/>";               
+                }elseif($tooLate2){
+                    echo "<img src='img/exclamation.png' alt='' title='Prazo esgotado!' class='icon'/>";
+                }elseif(!$tooLate2 && $tooLate3){
+                    echo '<img src="img/exclamation.png" alt="" title="Prazo esgotado!" class="icon"/>'; 
+                }
+                if (Utils::escape($todo->getAndamento())):
+                    echo '<img src="img/status/ANDAMENTO.png" alt="" title="Em Implementação!" class="icon"/>';
+                endif;
+                echo '<img src="img/priority/'.$todo->getPriority(). '.png" alt="Nível '.$todo->getPriority().'" title="Nível '.$todo->getPriority().'" />';
+                echo '<h3><a href="'.Utils::createLink('detail', array('id' => $todo->getId())).'">'.Utils::escape($todo->getTipoacao()).'</a></h3>';
+                if ($todo->getDescription()):
+                    echo '<p class="description">'.Utils::escape($todo->getDescription()).'</p>';
+                endif;
+                echo '<p><span class="label">Numero da RNC:</span> '.Utils::escape($todo->getNumero()).'</p>';
+                echo '<p><span class="label">Abertura RNC:</span> '.Utils::escape(($todo->getCreatedOn()->format('d/m/Y'))).'</p>';
+                if($status <> Todo::STATUS_DONE):
+                    echo '<p><span class="label">Retorno:</span>';
+                    if ($tooLate): 
+                        echo '<span class="too-late">';
+                    endif;
+                    echo Utils::escape(($todo->getDueOn()->format('d/m/Y')));
+                    if ($tooLate): 
+                        echo '</span>';
+                    endif;
+                echo '</p>';
+                endif;
+                if (($todo->getEliminacao()->format('d/m/Y')!=$todo->getCreatedOn()->format('d/m/Y')) && $status <> Todo::STATUS_DONE) :
+                    echo '<p><span class="label">'.$eliminacao_nome .'</span>';
+                    if (@$tooLate2): 
+                        echo '<span class="too-late">';
+                    endif;
+                        echo Utils::escape(($todo->getEliminacao()->format('d/m/Y'))); 
+                endif;
+                    if (($todo->getEliminacao_novo()->format('d/m/Y')!=$todo->getCreatedOn()->format('d/m/Y')) && $status<>Todo::STATUS_DONE) :
+                    if (@$tooLate2): 
+                         echo '</span>';
+                    endif;
+                echo '</p>
+		<p><span class="label">Novo Prazo:</span>';
+                    if (@$tooLate3): 
+                        echo '<span class="too-late">';
+                    endif;
+                    echo Utils::escape(($todo->getEliminacao_novo()->format('d/m/Y'))); 
+                    endif;
+                    if (@$tooLate3): 
+                        echo '</span>';
+                    endif;
+                echo '</p>';
+                if(@$tooLate4):
+                    echo '<p><span class="label">Conclusão:</span>';
+                    echo Utils::escape(($todo->getEficazData()->format('d/m/Y')));
+                    if (@$tooLate4): 
+                        echo '</span>';
+                    endif;
+                echo '</p>';
+                endif;
+                    if (Utils::escape($todo->getNovoRnc())):
+                        echo '<p><span class="label">Novo RNC:</span>';
+                        echo Utils::escape($todo->getNovoRnc()); endif;
+                echo '</p>';
+            echo '</li>';
+                endif;
+            endforeach;
+    echo '</ul>';
+endif; 
+?>

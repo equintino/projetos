@@ -1,0 +1,126 @@
+<?php
+//~ Template for detail.php
+// variables:
+//  $todo - TODO to be displayed
+//  $tooLate - if the task should have been done already
+
+/* @var $todo Todo */
+// Mapeando os campos
+    $banco = 'white';
+    $campo = array(
+        'Número' => Utils::escape($todo->getNumero()),
+        'Abertura' => Utils::escape(($todo->getCreatedOn()->format('d/m/Y'))),
+        'Prazo' => Utils::escape(($todo->getDueOn()->format('d/m/Y'))),
+        'Detalhamento' => Utils::escape($todo->getDescricao()),
+        'Origem' => Utils::escape($todo->getOrigem()),
+        'Tipo Ação' => Utils::escape($todo->getTipoacao()),
+        'Processo' => Utils::escape($todo->getProcesso()),
+        'Responsável pela Identificação' => Utils::escape($todo->getIdentificador()),
+        'Causa da Não Conformidade' => Utils::escape($todo->getCausa()),
+        'Ação Imediata' => Utils::escape($todo->getImediata()),
+        'Ação Corretiva' => Utils::escape($todo->getCorretiva()),
+        'Responsável pela Implementação' => Utils::escape($todo->getImplementador()),
+        'Prazo para a Eliminação' => Utils::escape(($todo->getEliminacao()->format('d/m/Y'))),
+        'Novo Prazo' => Utils::escape(($todo->getEliminacao_novo()->format('d/m/Y'))),
+        'Registro da Verificação da Eficácia' => Utils::escape($todo->getComment()),
+        'Responsável pela Verificação' => Utils::escape($todo->getRespVerificacao()),
+        'A Ação foi Eficaz?' => Utils::escape($todo->getEficaz()),
+        'Conclusão' => Utils::escape(($todo->getEficazData()->format('d/m/Y'))),
+        'Novo RNC' => Utils::escape($todo->getNovoRnc()),
+    );
+
+echo '<h1>';
+ 
+    if ($tooLate){ 
+        echo '<img src="img/exclamation.png" alt="" title="Prazo esgotado!" /> ';
+    }elseif ($tooLate2){
+        echo '<img src="img/exclamation.png" alt="" title="Prazo esgotado!" /> ';
+    }elseif ($tooLate3){
+        echo '<img src="img/exclamation.png" alt="" title="Prazo esgotado!" /> ';
+    } 
+        echo Utils::escape($todo->getTipoacao()); 
+
+echo '</h1>';
+echo '<table>';
+    if(array_key_exists('Número',$campo)){
+        //echo "Número existe<br>";
+    }
+    echo "<table class=\"detail\">";
+            $x = 1;
+        foreach($campo as $key => $item){
+            if($item <> null){
+                if(($key=='Prazo para a Eliminação')||($key=='Novo Prazo')||($key=='Conclusão')){
+                    if($item<>Utils::escape(($todo->getCreatedOn()->format('d/m/Y')))){
+                        if($x % 2 == 0){
+                            $cor='white';
+                        }else{
+                            $cor='';
+                        }
+                    echo "<tr bgcolor=".$cor." >"
+                        . "<th width=200px>".$key." </th>
+                        <td>".$item."</td>
+                        </tr>";
+                        $x++;
+                    }
+                }else{
+                   if($x % 2 == 0){
+                      $cor='white';
+                   }else{
+                      $cor='';
+                   }
+                    echo "<tr bgcolor=".$cor." >"
+                        . "<th width=200px>".$key." </th>
+                        <td>".$item."</td>
+                        </tr>";
+                        $x++;
+                }
+            }
+        }
+    echo '<tr>';
+        echo '<th>Status</th>';
+        echo '<td><img src="img/status/'.$todo->getStatus().'.png" alt="" title="'.Utils::capitalize($todo->getStatus()).'" class="icon" /></td>';
+    echo '</tr><tr>';
+        echo '<td colspan="2">&nbsp;</td>';
+    echo '</tr><tr>';
+    echo '<th></th>';
+    echo '<td>';
+        if(Utils::capitalize($_COOKIE['login'])==Utils::capitalize('QUALIDADE')):
+            echo '<div class="statuses">';
+                foreach (Todo::allStatuses() as $status): 
+                    if ($status != $todo->getStatus()):
+                        echo ' <a href="'.Utils::createLink('altera-status', array('id' => $todo->getId(), 'status' => $status)).'" title="Altera o status da RNC para '.Utils::capitalize($status).'." class="change-status-link"><img src="img/status/'.$status.'.png" alt="" title="Alterar para '.Utils::capitalize($status).'." class="icon" /></a>';
+                    else:
+                        echo '<img src="img/status/'.$status.'-disabled.png" alt="" title="Este RNC está '.Utils::capitalize($status).'." class="icon" />';
+                    endif;
+                endforeach;
+            echo '</div>';
+        endif;
+            echo '<div class="actions">';
+               echo '<a href="'.Utils::createLink('add-edit', array('id' => $todo->getId())).'"><img src="img/action/edit.png" alt="" title="Edita" class="icon" /></a>';
+                if(Utils::capitalize($_COOKIE['login'])==Utils::capitalize('QUALIDADE')):
+                    echo '<a href="'.Utils::createLink('delete', array('id' => $todo->getId())).'" id="delete-link"><img src="img/action/delete.png" alt="" title="Exclui" class="icon" /></a>';
+                endif;
+            echo '</div>
+        </td>
+    </tr>
+</table>
+
+<p>';
+    $backLink = Utils::createLink('list', array('status' => $todo->getStatus()));
+    echo '<a href="'.$backLink.'"><img src="img/action/back.png" alt="" title="Retornar à lista." class="icon"/></a>&nbsp;
+    <a href="'.$backLink.'">Retornar à lista</a>
+</p>
+
+<div id="delete-dialog" title="Exclui este RNC?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Este RNC será excluído. Confirma?</p>
+</div>
+<div id="change-status-dialog">
+    <form id="change-status-form" method="post">
+        <fieldset>
+            <div class="field">
+                <label>Registro da Verificação da Eficácia:</label>
+                <textarea name="comment" cols="41" rows="1"></textarea>
+            </div>
+        </fieldset>
+    </form>
+</div>';
